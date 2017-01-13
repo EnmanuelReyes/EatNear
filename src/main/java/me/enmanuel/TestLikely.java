@@ -33,7 +33,7 @@ public class TestLikely {
         ScriptObjectMirror result = (ScriptObjectMirror) invocable.invokeFunction("buildModel", inputMatrix,rowLabels,colLabels);
         System.out.println(result);
         System.out.println(result.getClass());
-        final ScriptObjectMirror x = (ScriptObjectMirror) result.callMember("rankAllItems", "0");
+        final ScriptObjectMirror x = (ScriptObjectMirror) result.callMember("recommendations", "John");
         System.out.println(Arrays.toString(x.to(String[].class)));
     }
 }
