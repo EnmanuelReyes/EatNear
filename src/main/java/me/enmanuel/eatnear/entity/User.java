@@ -15,6 +15,7 @@ import javax.persistence.*;
 @Entity
 @DynamicInsert
 @DynamicUpdate
+@Table(name= "`user`")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

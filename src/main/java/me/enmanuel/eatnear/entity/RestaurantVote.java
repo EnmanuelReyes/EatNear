@@ -3,10 +3,8 @@ package me.enmanuel.eatnear.entity;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Created by IntelliJ IDEA.
@@ -17,11 +15,44 @@ import javax.persistence.Id;
 @Entity
 @DynamicInsert
 @DynamicUpdate
-public class RestaurantVote {
+public class RestaurantVote implements Serializable {
+    @EmbeddedId
+    private RestaurantVotePK restaurantVoteId;
 
-    private Restaurant restaurant;
-    private User user;
     private byte vote;
 
+    public RestaurantVotePK getRestaurantVoteId() {
+        return restaurantVoteId;
+    }
+
+    public void setRestaurantVoteId(RestaurantVotePK restaurantVoteId) {
+        this.restaurantVoteId = restaurantVoteId;
+    }
+
+    public byte getVote() {
+        return vote;
+    }
+
+    public void setVote(byte vote) {
+        this.vote = vote;
+    }
+}
+
+@Embeddable
+class RestaurantVotePK implements Serializable {
+
+    @ManyToOne
+    private Restaurant restaurant;
+    @ManyToOne
+    private User user;
+
+    public RestaurantVotePK(Restaurant restaurant) {
+        this.restaurant = restaurant;
+    }
+
+    public RestaurantVotePK(Restaurant restaurant, User user) {
+        this.restaurant = restaurant;
+        this.user = user;
+    }
 
 }
