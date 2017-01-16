@@ -3,14 +3,22 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="layout/default">
 <head lang="en">
-    <title>Search</title>
+    <title>Restaurante</title>
 </head>
 <body>
 <div class="row" layout:fragment="content">
+    <style type="text/css">
+
+        #mainMap {
+            width: inherit;
+            height: 250px;
+        }
+    </style>
     <h2 class="indigo-text center">Información del Restaurante</h2>
 
     <form id="restaurantFrm" th:action="@{/restaurant}" th:object="${restaurant}" method="post"
           class="col m8 s12 offset-m2">
+
         <ul th:if="${#fields.hasErrors('*')}" class="errorList">
             <li th:each="err : ${#fields.errors('*')}" th:text="${err}">
                 Input is incorrect
@@ -48,8 +56,63 @@
 
                 <div th:errors="*{restaurantType}" class="red-text">Error</div>
             </div>
+            <div class="input-field col s6">
+                <input th:field="${restaurant.foodType}" id="foodType" type="text"
+                       th:errorclass="invalid"/>
+                <label for="foodType">Tipo de Comida</label>
+
+                <div th:errors="*{foodType}" class="red-text">Error</div>
+
+            </div>
 
         </div>
+        <div class="row">
+            <div class="input-field col s6">
+                <input th:field="${restaurant.phoneNumber}" id="phoneNumber" type="tel" placeholder="999-999-9999"
+                       pattern="\d{3}[\-]\d{3}[\-]\d{4}"
+                       th:errorclass="invalid"/>
+                <label for="name">Teléfono</label>
+
+                <div th:errors="*{phoneNumber}" class="red-text">Error</div>
+            </div>
+            <div class="input-field col s6">
+                <input th:field="${restaurant.city}" id="city" type="text"
+                       th:errorclass="invalid"/>
+                <label for="maxPrice">Ciudad o Municipio</label>
+
+                <div th:errors="*{city}" class="red-text">Error</div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s6">
+                <input th:field="${restaurant.minPrice}" id="minPrice" type="number"
+                       th:errorclass="invalid"/>
+                <label for="name">Precio Mínimo</label>
+
+                <div th:errors="*{minPrice}" class="red-text">Error</div>
+            </div>
+            <div class="input-field col s6">
+                <input th:field="${restaurant.maxPrice}" id="maxPrice" type="number"
+                       th:errorclass="invalid"/>
+                <label for="maxPrice">Precio Máximo</label>
+
+                <div th:errors="*{address}" class="red-text">Error</div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <div id="mainMap">
+
+                </div>
+            </div>
+
+        </div>
+
+        <input th:field="${restaurant.latitude}" type="hidden"/>
+        <input th:field="${restaurant.longitude}" type="hidden"/>
+
 
         <br/>
         <br/>
@@ -60,9 +123,57 @@
                 <i class="mdi-content-send right"></i>
             </button>
         </div>
+        <script type="text/javascript"
+                src="http://maps.google.com/maps/api/js?sensor=true&amp;key=AIzaSyAdeJZyncA5hno12OHwEll5zNz3gBzo8hc"></script>
     </form>
 </div>
 <script type="text/javascript" layout:fragment="script">
+    //<![CDATA[
+    var $latitude = $('#latitude');
+    var $longitude = $('#longitude');
+    var mainMap;
+    var currentMarker = null;
+
+    $(function () {
+        loadMap();
+    });
+    function loadMarker() {
+        if ($latitude.val() && $longitude.val()) {
+            var myLatLng = {lat: Number($latitude.val()), lng: Number($longitude.val())};
+            currentMarker = new google.maps.Marker({
+                position: myLatLng,
+                map: mainMap,
+                animation: google.maps.Animation.DROP
+            });
+        }
+    }
+    function loadMap() {
+        mainMap = new google.maps.Map(document.getElementById('mainMap'), {
+            center: {lat: 18.4807911, lng: -69.9147241},
+            zoom: 13
+        });
+        google.maps.event.addListener(mainMap, 'click', function (event) {
+            setMarker(event);
+        });
+        loadMarker();
+    }
+
+    function setMarker(event) {
+        if (currentMarker) {
+            currentMarker.setPosition(event.latLng);
+        } else {
+            currentMarker = new google.maps.Marker({
+                position: event.latLng,
+                map: mainMap,
+                animation: google.maps.Animation.DROP
+            });
+        }
+        console.log(event);
+        $latitude.val(event.latLng.lat());
+        $longitude.val(event.latLng.lng());
+    }
+
+    //]]>
 
 </script>
 </body>

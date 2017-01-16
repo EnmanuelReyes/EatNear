@@ -84,9 +84,9 @@ public class RestaurantController {
         modelMap.addAttribute("restaurantTypes", restaurantTypeService.findAll());
     }
 
-    @RequestMapping(value = "/restaurants", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/restaurants", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Iterable<Restaurant> tasks() {
+    public Iterable<Restaurant> restaurants() {
         return restaurantService.findAll();
     }
 
