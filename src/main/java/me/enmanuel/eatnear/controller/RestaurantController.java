@@ -1,9 +1,12 @@
 package me.enmanuel.eatnear.controller;
 
+import me.enmanuel.eatnear.domain.Geolocalizable;
 import me.enmanuel.eatnear.entity.Restaurant;
+import me.enmanuel.eatnear.entity.RestaurantVote;
 import me.enmanuel.eatnear.service.RestaurantService;
 import me.enmanuel.eatnear.service.RestaurantTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -32,7 +35,6 @@ public class RestaurantController {
         modelAndView.setViewName("restaurants");
         return modelAndView;
     }
-
 
 
     @PostMapping(value = "/restaurant")
@@ -66,7 +68,6 @@ public class RestaurantController {
     }
 
 
-
     @RequestMapping(value = "/restaurant/delete/{restaurantId}")
     public ModelAndView delete(ModelAndView modelAndView, @PathVariable Integer restaurantId,
                                RedirectAttributes redirectAttributes) {
@@ -84,10 +85,29 @@ public class RestaurantController {
         modelMap.addAttribute("restaurantTypes", restaurantTypeService.findAll());
     }
 
+
     @GetMapping(value = "/restaurants", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Iterable<Restaurant> restaurants() {
-        return restaurantService.findAll();
+    public Iterable<Restaurant> restaurants(@RequestParam(required = false) Double latitude, @RequestParam(required = false) Double longitude) {
+        if (latitude == null || longitude == null)
+            return restaurantService.findAll();
+        else
+            return restaurantService.findRestaurants(new Geolocalizable() {
+                @Override
+                public Double getLatitude() {
+                    return latitude;
+                }
+
+                @Override
+                public Double getLongitude() {
+                    return longitude;
+                }
+            });
+    }
+
+    @PostMapping(value = "/restaurants")
+    @ResponseStatus(HttpStatus.OK)
+    public void vote(@RequestBody RestaurantVote restaurantVote) {
     }
 
 

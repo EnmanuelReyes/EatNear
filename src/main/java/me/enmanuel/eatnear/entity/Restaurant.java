@@ -1,12 +1,16 @@
 package me.enmanuel.eatnear.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import me.enmanuel.eatnear.domain.Geolocalizable;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.List;
+
+import static javax.persistence.FetchType.EAGER;
 
 /**
  * Created by IntelliJ IDEA.
@@ -17,9 +21,10 @@ import java.math.BigDecimal;
 @Entity
 @DynamicInsert
 @DynamicUpdate
-public class Restaurant {
+public class Restaurant implements Geolocalizable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id_restaurant")
     private Integer id;
     private String name;
 
@@ -37,6 +42,20 @@ public class Restaurant {
 
     private Double latitude;
     private Double longitude;
+    @OneToMany(mappedBy = "restaurant", fetch = EAGER)
+    @JsonManagedReference
+    private List<RestaurantVote> restaurantVotes;
+
+    public Restaurant() {
+    }
+
+    public Restaurant(Integer id) {
+        this.id = id;
+    }
+
+    public Restaurant(RestaurantType restaurantType) {
+        this.restaurantType = restaurantType;
+    }
 
     public Integer getId() {
         return id;
@@ -124,5 +143,13 @@ public class Restaurant {
 
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
+    }
+
+    public List<RestaurantVote> getRestaurantVotes() {
+        return restaurantVotes;
+    }
+
+    public void setRestaurantVotes(List<RestaurantVote> restaurantVotes) {
+        this.restaurantVotes = restaurantVotes;
     }
 }

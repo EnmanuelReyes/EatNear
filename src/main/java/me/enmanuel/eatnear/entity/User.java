@@ -1,10 +1,13 @@
 package me.enmanuel.eatnear.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -15,23 +18,40 @@ import javax.persistence.*;
 @Entity
 @DynamicInsert
 @DynamicUpdate
-@Table(name= "`user`")
+@Table(name = "`user`")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id_user")
     private Integer id;
 
     @Column(unique = true)
-    private String user;
+    @NotNull
+    private String username;
+    @NotNull
     private String password;
     @Email
     private String email;
 
-    public User(String user, String password, String email) {
-        this.user = user;
+    @OneToMany(mappedBy = "user")
+    @JsonManagedReference
+    private List<RestaurantVote> restaurantVotes;
+
+    public User(Integer id, String username) {
+        this.username = username;
+        this.id = id;
+    }
+
+    public User(Integer id) {
+        this.id = id;
+    }
+
+    public User(String username, String password, String email) {
+        this.username = username;
         this.password = password;
         this.email = email;
     }
+
 
     public User() {
     }
@@ -44,12 +64,12 @@ public class User {
         this.id = id;
     }
 
-    public String getUser() {
-        return user;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -66,5 +86,13 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public List<RestaurantVote> getRestaurantVotes() {
+        return restaurantVotes;
+    }
+
+    public void setRestaurantVotes(List<RestaurantVote> restaurantVotes) {
+        this.restaurantVotes = restaurantVotes;
     }
 }

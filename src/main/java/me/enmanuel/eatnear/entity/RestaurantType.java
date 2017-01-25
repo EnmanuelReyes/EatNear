@@ -31,6 +31,9 @@ public class RestaurantType {
         this.id = id;
         this.name = name;
     }
+    public RestaurantType(Integer id) {
+        this.id = id;
+    }
 
     public Integer getId() {
         return id;
