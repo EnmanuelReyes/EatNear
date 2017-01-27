@@ -29,7 +29,7 @@ public class RestaurantVote implements Serializable {
     private Restaurant restaurant;
     @ManyToOne
     @JoinColumn(name = "id_user", referencedColumnName = "id_user", nullable = false)
-    @JsonBackReference
+    @JsonBackReference(value = "secondParent")
     private User user;
 
     private byte vote;

@@ -86,7 +86,7 @@ public class RestaurantController {
     }
 
 
-    @GetMapping(value = "/restaurants", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/api/restaurants", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public Iterable<Restaurant> restaurants(@RequestParam(required = false) Double latitude, @RequestParam(required = false) Double longitude) {
         if (latitude == null || longitude == null)
@@ -103,11 +103,6 @@ public class RestaurantController {
                     return longitude;
                 }
             });
-    }
-
-    @PostMapping(value = "/restaurants")
-    @ResponseStatus(HttpStatus.OK)
-    public void vote(@RequestBody RestaurantVote restaurantVote) {
     }
 
 

@@ -15,8 +15,13 @@ public class UserService implements Service<User> {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    LikelyService likelyService;
+
     public User save(User user) {
-        return userRepository.save(user);
+        final User save = userRepository.save(user);
+        likelyService.buildModel();
+        return save;
     }
 
     @Override

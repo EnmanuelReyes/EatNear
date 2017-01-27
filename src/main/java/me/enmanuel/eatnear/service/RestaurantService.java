@@ -19,7 +19,8 @@ import java.util.stream.Collectors;
  */
 @org.springframework.stereotype.Service
 public class RestaurantService implements Service<Restaurant> {
-
+    @Autowired
+    LikelyService likelyService;
     @Autowired
     private RestaurantRepository restaurantRepository;
 

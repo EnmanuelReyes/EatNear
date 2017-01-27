@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 
 import static javax.persistence.FetchType.EAGER;
 
@@ -151,5 +152,18 @@ public class Restaurant implements Geolocalizable {
 
     public void setRestaurantVotes(List<RestaurantVote> restaurantVotes) {
         this.restaurantVotes = restaurantVotes;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Restaurant that = (Restaurant) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

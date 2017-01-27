@@ -8,6 +8,7 @@ import org.hibernate.validator.constraints.Email;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by IntelliJ IDEA.
@@ -34,11 +35,12 @@ public class User {
     private String email;
 
     @OneToMany(mappedBy = "user")
-    @JsonManagedReference
+    @JsonManagedReference(value ="secondParent")
     private List<RestaurantVote> restaurantVotes;
 
-    public User(Integer id, String username) {
+    public User(Integer id, String username, String password) {
         this.username = username;
+        this.password = password;
         this.id = id;
     }
 
@@ -94,5 +96,18 @@ public class User {
 
     public void setRestaurantVotes(List<RestaurantVote> restaurantVotes) {
         this.restaurantVotes = restaurantVotes;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User that = (User) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

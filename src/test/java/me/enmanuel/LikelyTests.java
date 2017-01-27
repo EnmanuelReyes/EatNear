@@ -1,7 +1,11 @@
 package me.enmanuel;
 
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
+import me.enmanuel.eatnear.repository.RestaurantRepository;
+import me.enmanuel.eatnear.repository.UserRepository;
 import me.enmanuel.eatnear.service.LikelyService;
+import me.enmanuel.eatnear.service.RestaurantService;
+import me.enmanuel.eatnear.service.UserService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,10 +37,10 @@ public class LikelyTests {
                 Arrays.asList(7, 8, 0, 9));
         List<String> rowLabels = Arrays.asList("John", "Sue", "Joe");
         List<String> colLabels = Arrays.asList("Red", "Blue", "Green", "Purple");
-        ScriptObjectMirror model = likelyService.buildModel(rowLabels, colLabels, inputMatrix);
-        ScriptObjectMirror recommendations = likelyService.recommendations(model, "John") ;
+        likelyService.buildModel(rowLabels, colLabels, inputMatrix);
+        ScriptObjectMirror recommendations = likelyService.recommendations("John");
         final String[] arr = recommendations.to(String[].class);
         System.out.println(Arrays.toString(arr));
-        Assert.assertEquals("Purple",arr[0].split(",")[0]);
+        Assert.assertEquals("Purple", arr[0].split(",")[0]);
     }
 }
