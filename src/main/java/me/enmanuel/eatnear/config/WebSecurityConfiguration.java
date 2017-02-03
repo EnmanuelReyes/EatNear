@@ -1,6 +1,7 @@
 package me.enmanuel.eatnear.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -8,6 +9,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -32,17 +34,19 @@ import java.security.Principal;
 @RestController
 public class WebSecurityConfiguration extends
         WebSecurityConfigurerAdapter {
-
+    @Autowired
+    @Qualifier("userDetailsService")
+    UserDetailsService userDetailsService;
 
     @RequestMapping("/user")
     public Principal user(Principal user) {
         return user;
     }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication().withUser("enma").password("koko").roles("USER");
-    }
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.inMemoryAuthentication().withUser("enma").password("koko").roles("USER");
+//    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -80,7 +84,8 @@ public class WebSecurityConfiguration extends
             http
                     .authorizeRequests()
                     .antMatchers("/swagger-ui.html").permitAll()
-                    .antMatchers("/api/**").hasRole("USER").anyRequest().permitAll();
+                    .antMatchers("/api/user").permitAll()
+                    .antMatchers("/api/**").authenticated().anyRequest().permitAll();
             // @formatter:on
         }
 
@@ -90,7 +95,7 @@ public class WebSecurityConfiguration extends
     @Autowired
     public void init(AuthenticationManagerBuilder auth) throws Exception {
         // @formatter:off
-        auth.inMemoryAuthentication().withUser("enma").password("nana").roles("USER");
+        auth.userDetailsService(userDetailsService);
         // @formatter:on
     }
 

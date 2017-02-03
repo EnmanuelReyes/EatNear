@@ -55,16 +55,21 @@ public class LikelyService {
 
         List<Restaurant> restaurants = (List<Restaurant>) restaurantService.findAll();
         List<User> users = (List<User>) userService.findAll();
-        List<String> usersId = users.stream().map(x->x.getId().toString()).collect(Collectors.toList());
-        List<String> restaurantsId = restaurants.stream().map(x->x.getId().toString()).collect(Collectors.toList());
+        List<String> usersId = users.stream().map(x -> x.getId().toString()).collect(Collectors.toList());
+        List<String> restaurantsId = restaurants.stream().map(x -> x.getId().toString()).collect(Collectors.toList());
 
         List<List<Integer>> restaurantVotes = new ArrayList<>();
 
         for (User user : users) {
             List<Integer> userVotes = new ArrayList<>();
             for (Restaurant restaurant : restaurants) {
-                final Optional<RestaurantVote> restaurantVote = user.getRestaurantVotes().stream()
-                        .filter(x -> x.getRestaurant().equals(restaurant)).findFirst();
+                Optional<RestaurantVote> restaurantVote;
+                if (user.getRestaurantVotes() == null) {
+                    restaurantVote = Optional.empty();
+                } else {
+                    restaurantVote = user.getRestaurantVotes().stream()
+                            .filter(x -> x.getRestaurant().equals(restaurant)).findFirst();
+                }
                 if (restaurantVote.isPresent()) {
                     userVotes.add((int) restaurantVote.get().getVote());
                 } else {
@@ -76,7 +81,7 @@ public class LikelyService {
 
 
         try {
-            return buildModel(usersId,restaurantsId,restaurantVotes);
+            return buildModel(usersId, restaurantsId, restaurantVotes);
         } catch (ScriptException | NoSuchMethodException e) {
             e.printStackTrace();
         }
@@ -96,6 +101,7 @@ public class LikelyService {
     public ScriptObjectMirror recommendations(String name) {
         return recommendations(model, name);
     }
+
     public ScriptObjectMirror recommendations(User user) {
         return recommendations(String.valueOf(user.getId()));
     }

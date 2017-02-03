@@ -36,7 +36,7 @@ public class ApplicationDataSource {
     @Bean
     public CommandLineRunner initUsers(UserRepository userRepository) {
         return (args) -> {
-            userRepository.save(new User(1, "Enmanuel","password"));
+            userRepository.save(new User(1, "enma","koko"));
         };
     }
 
