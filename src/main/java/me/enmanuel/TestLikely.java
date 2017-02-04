@@ -1,6 +1,8 @@
 package me.enmanuel;
 
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
+import me.enmanuel.eatnear.domain.Recommendation;
+import me.enmanuel.eatnear.entity.Restaurant;
 
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
@@ -34,6 +36,13 @@ public class TestLikely {
         System.out.println(result);
         System.out.println(result.getClass());
         final ScriptObjectMirror x = (ScriptObjectMirror) result.callMember("recommendations", "John");
-        System.out.println(Arrays.toString(x.to(String[].class)));
+        String string = Arrays.toString(x.to(String[].class));
+        string = string.replaceAll("\\[","");
+        string = string.replaceAll("]","");
+        System.out.println(string);
+        Recommendation recommendation = new Recommendation();
+        recommendation.setRestaurant(new Restaurant(Integer.valueOf(string.split(",")[0])));
+        recommendation.setWtf(Double.parseDouble(string.split(",")[1]));
+        System.out.println(recommendation);
     }
 }

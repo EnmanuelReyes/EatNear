@@ -1,6 +1,7 @@
 package me.enmanuel.eatnear.service;
 
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
+import me.enmanuel.eatnear.domain.Recommendation;
 import me.enmanuel.eatnear.entity.Restaurant;
 import me.enmanuel.eatnear.entity.RestaurantVote;
 import me.enmanuel.eatnear.entity.User;
@@ -13,6 +14,7 @@ import javax.script.ScriptException;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -102,7 +104,17 @@ public class LikelyService {
         return recommendations(model, name);
     }
 
-    public ScriptObjectMirror recommendations(User user) {
-        return recommendations(String.valueOf(user.getId()));
+    public Recommendation recommendations(User user) {
+        if (model == null){
+            buildModel();
+        }
+        final ScriptObjectMirror recommendations = recommendations(String.valueOf(user.getId()));
+        String string = Arrays.toString(recommendations.to(String[].class));
+        string = string.replaceAll("\\[","");
+        string = string.replaceAll("]","");
+        Recommendation recommendation = new Recommendation();
+        recommendation.setRestaurant(restaurantService.findOne(Integer.valueOf(string.split(",")[0])));
+        recommendation.setWtf(Double.parseDouble(string.split(",")[1]));
+        return recommendation;
     }
 }

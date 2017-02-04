@@ -37,24 +37,38 @@ public class ApplicationDataSource {
     public CommandLineRunner initUsers(UserRepository userRepository) {
         return (args) -> {
             userRepository.save(new User(1, "enma","koko"));
+            userRepository.save(new User(2, "willis","koko"));
+            userRepository.save(new User(3, "luis","koko"));
         };
     }
 
     @Bean
     public CommandLineRunner initRestaurants(RestaurantRepository restaurantRepository) {
         return (args) -> {
-            Restaurant restaurant = new Restaurant(1);
-            restaurant.setRestaurantType(new RestaurantType(1));
-            restaurant.setName("Plus+");
-            restaurant.setLatitude(18.473592853487055);
-            restaurant.setLongitude(-69.91469261236489);
-            restaurant = restaurantRepository.save(restaurant);
+            Restaurant plus = new Restaurant(1);
+            plus.setRestaurantType(new RestaurantType(1));
+            plus.setName("Plus+");
+            plus.setLatitude(18.473592853487055);
+            plus.setLongitude(-69.91469261236489);
+            restaurantRepository.save(plus);
             Restaurant julieta = new Restaurant(2);
             julieta.setRestaurantType(new RestaurantType(1));
             julieta.setName("Julieta");
             julieta.setLatitude(18.47271493472734);
             julieta.setLongitude(-69.93943959474564);
-            julieta = restaurantRepository.save(julieta);
+            restaurantRepository.save(julieta);
+            Restaurant apetito = new Restaurant(3);
+            apetito.setRestaurantType(new RestaurantType(1));
+            apetito.setName("Apetito");
+            apetito.setLatitude(18.47271493472734);
+            apetito.setLongitude(-69.93943959474564);
+            restaurantRepository.save(apetito);
+            Restaurant pizzahut= new Restaurant(4);
+            pizzahut.setRestaurantType(new RestaurantType(1));
+            pizzahut.setName("Pizza Hut");
+            pizzahut.setLatitude(18.47271493472734);
+            pizzahut.setLongitude(-69.93943959474564);
+            restaurantRepository.save(pizzahut);
         };
     }
 
@@ -62,8 +76,21 @@ public class ApplicationDataSource {
     public CommandLineRunner initRestaurantVotes(RestaurantRepository restaurantRepository,RestaurantVoteRepository restaurantVoteRepository) {
         return (args) -> {
             System.out.println(restaurantRepository.findOne(1).getRestaurantVotes());
-            RestaurantVote restaurantVote = new RestaurantVote(new Restaurant(1), new User(1), (byte) 3);
-            restaurantVoteRepository.save(restaurantVote);
+            restaurantVoteRepository.save(new RestaurantVote(new Restaurant(1), new User(1), (byte) 1));
+            restaurantVoteRepository.save(new RestaurantVote(new Restaurant(2), new User(1), (byte) 2));
+            restaurantVoteRepository.save(new RestaurantVote(new Restaurant(3), new User(1), (byte) 3));
+            restaurantVoteRepository.save(new RestaurantVote(new Restaurant(4), new User(1), (byte) 0));
+
+            restaurantVoteRepository.save(new RestaurantVote(new Restaurant(1), new User(2), (byte) 4));
+            restaurantVoteRepository.save(new RestaurantVote(new Restaurant(2), new User(2), (byte) 0));
+            restaurantVoteRepository.save(new RestaurantVote(new Restaurant(3), new User(2), (byte) 5));
+            restaurantVoteRepository.save(new RestaurantVote(new Restaurant(4), new User(2), (byte) 6));
+
+            restaurantVoteRepository.save(new RestaurantVote(new Restaurant(1), new User(3), (byte) 7));
+            restaurantVoteRepository.save(new RestaurantVote(new Restaurant(2), new User(3), (byte) 8));
+            restaurantVoteRepository.save(new RestaurantVote(new Restaurant(3), new User(3), (byte) 0));
+            restaurantVoteRepository.save(new RestaurantVote(new Restaurant(4), new User(3), (byte) 9));
+
         };
     }
 }
