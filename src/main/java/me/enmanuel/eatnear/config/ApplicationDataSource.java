@@ -60,14 +60,14 @@ public class ApplicationDataSource {
             Restaurant apetito = new Restaurant(3);
             apetito.setRestaurantType(new RestaurantType(1));
             apetito.setName("Apetito");
-            apetito.setLatitude(18.47271493472734);
-            apetito.setLongitude(-69.93943959474564);
+            apetito.setLatitude(18.473920);
+            apetito.setLongitude(-69.914804);
             restaurantRepository.save(apetito);
             Restaurant pizzahut= new Restaurant(4);
             pizzahut.setRestaurantType(new RestaurantType(1));
             pizzahut.setName("Pizza Hut");
-            pizzahut.setLatitude(18.47271493472734);
-            pizzahut.setLongitude(-69.93943959474564);
+            pizzahut.setLatitude(18.465403);
+            pizzahut.setLongitude(-69.910037);
             restaurantRepository.save(pizzahut);
         };
     }
