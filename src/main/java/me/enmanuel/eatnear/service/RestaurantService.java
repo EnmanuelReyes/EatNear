@@ -51,6 +51,7 @@ public class RestaurantService implements Service<Restaurant> {
         return list;
     }
 
+
     public List<Restaurant> findRestaurants(final Geolocalizable geolocalizable) {
         List<Restaurant> list = new ArrayList<>();
         findAll().iterator().forEachRemaining(list::add);

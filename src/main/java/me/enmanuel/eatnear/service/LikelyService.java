@@ -105,16 +105,18 @@ public class LikelyService {
     }
 
     public Recommendation recommendations(User user) {
-        if (model == null){
+        if (model == null) {
             buildModel();
         }
         final ScriptObjectMirror recommendations = recommendations(String.valueOf(user.getId()));
         String string = Arrays.toString(recommendations.to(String[].class));
-        string = string.replaceAll("\\[","");
-        string = string.replaceAll("]","");
-        Recommendation recommendation = new Recommendation();
-        recommendation.setRestaurant(restaurantService.findOne(Integer.valueOf(string.split(",")[0])));
-        recommendation.setWtf(Double.parseDouble(string.split(",")[1]));
-        return recommendation;
+        string = string.replaceAll("\\[", "");
+        string = string.replaceAll("]", "");
+        if (!string.isEmpty()) {
+            Recommendation recommendation = new Recommendation();
+            recommendation.setRestaurant(restaurantService.findOne(Integer.valueOf(string.split(",")[0])));
+            recommendation.setWtf(Double.parseDouble(string.split(",")[1]));
+            return recommendation;
+        } else return null;
     }
 }

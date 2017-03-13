@@ -14,6 +14,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+import java.math.BigDecimal;
+
 /**
  * Created by IntelliJ IDEA.
  * User: Enmanuel Reyes
@@ -48,24 +50,49 @@ public class ApplicationDataSource {
             Restaurant plus = new Restaurant(1);
             plus.setRestaurantType(new RestaurantType(1));
             plus.setName("Plus+");
+            plus.setAddress("Atras de apec");
+            plus.setFoodType("Rapida");
+            plus.setMinPrice(BigDecimal.valueOf(100));
+            plus.setMaxPrice(BigDecimal.valueOf(205));
+            plus.setPhoneNumber("8094834309");
             plus.setLatitude(18.473592853487055);
             plus.setLongitude(-69.91469261236489);
             restaurantRepository.save(plus);
+
+
             Restaurant julieta = new Restaurant(2);
             julieta.setRestaurantType(new RestaurantType(1));
             julieta.setName("Julieta");
-            julieta.setLatitude(18.47271493472734);
+            julieta.setAddress("Atras de apec");
+            julieta.setFoodType("Rapida");
+            julieta.setMinPrice(BigDecimal.valueOf(100));
+            julieta.setMaxPrice(BigDecimal.valueOf(205));
+            julieta.setPhoneNumber("8094834309");julieta.setLatitude(18.47271493472734);
             julieta.setLongitude(-69.93943959474564);
             restaurantRepository.save(julieta);
+
+
             Restaurant apetito = new Restaurant(3);
             apetito.setRestaurantType(new RestaurantType(1));
             apetito.setName("Apetito");
+            apetito.setAddress("Atras de apec");
+            apetito.setFoodType("Rapida");
+            apetito.setMinPrice(BigDecimal.valueOf(100));
+            apetito.setMaxPrice(BigDecimal.valueOf(205));
+            apetito.setPhoneNumber("8094834309");
             apetito.setLatitude(18.473920);
             apetito.setLongitude(-69.914804);
             restaurantRepository.save(apetito);
+
+
             Restaurant pizzahut= new Restaurant(4);
             pizzahut.setRestaurantType(new RestaurantType(1));
             pizzahut.setName("Pizza Hut");
+            pizzahut.setAddress("Atras de apec");
+            pizzahut.setFoodType("Rapida");
+            pizzahut.setMinPrice(BigDecimal.valueOf(100));
+            pizzahut.setMaxPrice(BigDecimal.valueOf(205));
+            pizzahut.setPhoneNumber("8094834309");
             pizzahut.setLatitude(18.465403);
             pizzahut.setLongitude(-69.910037);
             restaurantRepository.save(pizzahut);

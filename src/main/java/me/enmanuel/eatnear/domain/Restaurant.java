@@ -3,21 +3,21 @@ package me.enmanuel.eatnear.domain;
 /**
  * Created by enmanuelreyes on 3/12/17.
  */
-public class Restaurant {
-    private me.enmanuel.eatnear.entity.Restaurant restaurant;
+public class Restaurant extends me.enmanuel.eatnear.entity.Restaurant {
     private byte vote;
 
-    public Restaurant(me.enmanuel.eatnear.entity.Restaurant restaurant, byte vote) {
-        this.restaurant = restaurant;
+    public Restaurant(me.enmanuel.eatnear.entity.Restaurant r, byte vote) {
+        setId(r.getId());
+        setAddress(r.getAddress());
+        setName(r.getName());
+        setPhoneNumber(r.getPhoneNumber());
+        setCity(r.getCity());
+        setFoodType(r.getFoodType());
+        setMinPrice(r.getMinPrice());
+        setMaxPrice(r.getMaxPrice());
+        setLatitude(r.getLatitude());
+        setLongitude(r.getLongitude());
         this.vote = vote;
-    }
-
-    public me.enmanuel.eatnear.entity.Restaurant getRestaurant() {
-        return restaurant;
-    }
-
-    public void setRestaurant(me.enmanuel.eatnear.entity.Restaurant restaurant) {
-        this.restaurant = restaurant;
     }
 
     public byte getVote() {
