@@ -3,16 +3,22 @@ package me.enmanuel.eatnear.controller;
 import me.enmanuel.eatnear.domain.Geolocalizable;
 import me.enmanuel.eatnear.entity.Restaurant;
 import me.enmanuel.eatnear.entity.RestaurantVote;
+import me.enmanuel.eatnear.entity.User;
 import me.enmanuel.eatnear.service.RestaurantService;
 import me.enmanuel.eatnear.service.RestaurantTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -88,11 +94,16 @@ public class RestaurantController {
 
     @GetMapping(value = "/api/restaurants", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Iterable<Restaurant> restaurants(@RequestParam(required = false) Double latitude, @RequestParam(required = false) Double longitude) {
+    public List<me.enmanuel.eatnear.domain.Restaurant> restaurants(Principal principal, @RequestParam(required = false) Double latitude,
+                                                                   @RequestParam(required = false) Double longitude) {
+        final User user =  (User) ((OAuth2Authentication)principal).getPrincipal();
+        List<Restaurant> restaurantList;
+        List<me.enmanuel.eatnear.domain.Restaurant> restaurants = new ArrayList<>();
+
         if (latitude == null || longitude == null)
-            return restaurantService.findAll();
+            restaurantList = restaurantService.findAll();
         else
-            return restaurantService.findRestaurants(new Geolocalizable() {
+            restaurantList = restaurantService.findRestaurants(new Geolocalizable() {
                 @Override
                 public Double getLatitude() {
                     return latitude;
@@ -103,6 +114,13 @@ public class RestaurantController {
                     return longitude;
                 }
             });
+
+        restaurantList.forEach(x-> {
+            restaurants.add(new me.enmanuel.eatnear.domain.Restaurant(x, x.getRestaurantVotes().stream().filter(z->z.getUser().equals(user)).findFirst()
+                    .orElse(new RestaurantVote(null,null,(byte)0)).getVote()));
+        });
+
+        return restaurants;
     }
 
 

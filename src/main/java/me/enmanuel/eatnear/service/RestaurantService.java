@@ -45,8 +45,10 @@ public class RestaurantService implements Service<Restaurant> {
     }
 
     @Override
-    public Iterable<Restaurant> findAll() {
-        return restaurantRepository.findAll();
+    public List<Restaurant> findAll() {
+        List<Restaurant> list = new ArrayList<>();
+        restaurantRepository.findAll().iterator().forEachRemaining(list::add);
+        return list;
     }
 
     public List<Restaurant> findRestaurants(final Geolocalizable geolocalizable) {

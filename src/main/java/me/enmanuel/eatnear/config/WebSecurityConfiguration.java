@@ -62,7 +62,7 @@ public class WebSecurityConfiguration extends
         @Override
         public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
             clients.inMemory().withClient("acme").secret("acmesecret").authorizedGrantTypes("password")
-                    .accessTokenValiditySeconds(1000).scopes("openid");
+                    .accessTokenValiditySeconds(3000000).scopes("openid");
         }
 
         @Override
